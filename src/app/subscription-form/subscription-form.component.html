@@ -4,17 +4,35 @@
             <h3>SUBSCRIPTION FORM</h3>
             <p class="m-auto subs-text">The aim is to push the sector onto a trajectory of sound commercial growth and to enable the States and the Centre to move in harmony and coordination.</p>
 
-            <form action="" class="row row-cols-3 mb-5 mt-5">
+
+            <div class="alert alert-danger mt-3" *ngIf="isEmailError">
+                Email is already in use.
+            </div>
+
+            <div class="alert alert-info mt-3" *ngIf="isSubscribed">
+                Thank you for subscribing to our newsletter service. Stay tuned for Awesome blog posts..!
+            </div>
+
+            <form class="row row-cols-3 mb-5 mt-5" #subForm = ngForm (ngSubmit)="onSubmit(subForm.value)" *ngIf="!isSubscribed">
 
                 <div class="form-group col-md-5">
-                    <input type="text" class="form-control shadow-effect" placeholder="Your Name">
+                    <input type="text" class="form-control shadow-effect" placeholder="Your Name" name="name" ngModel required #Name="ngModel" [ngClass]="{'is-invalid':Name.touched && Name.invalid}">
+
+                    <div class="text-danger" *ngIf="Name.touched && Name.invalid">
+                        <div *ngIf="Name.errors?.['required']"> Name is Required </div>
+                    </div>
                 </div>
                 <div class="form-group col-md-5">
-                    <input type="email" class="form-control shadow-effect" placeholder="Email Address">
+                    <input type="email" class="form-control shadow-effect" placeholder="Email Address" name="email" ngModel required email #Email="ngModel" [ngClass]="{'is-invalid': Email.touched && Email.invalid }">
+
+                    <div class="text-danger" *ngIf="Email.touched && Email.invalid">
+                        <div *ngIf="Email.errors?.['required']"> Email is Required </div>
+                        <div *ngIf="Email.errors?.['email']"> Please Enter a Valid Email Address </div>
+                    </div>
                 </div>
 
                 <div class="col-md-2">
-                    <button class="btn btn-info btn-block btn-theme">SUBSCRIBE</button>
+                    <button class="btn btn-info btn-block btn-theme" [disabled]="subForm.invalid">SUBSCRIBE</button>
                 </div>
             </form>
         </div>
